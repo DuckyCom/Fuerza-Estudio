@@ -19,7 +19,7 @@ Respondé en **español de Argentina**, con voseo. El sitio es solo es-AR.
   - logo e íconos: los SVG de `src/assets/brand/` extraídos del PDF; no redibujarlos ni deformarlos.
 - **Contraste:** texto chico nunca en fucsia/naranja sobre azul ni azul sobre fucsia/naranja.
 - **Inspiración:** se puede tomar estructura y criterios de `C:\Users\benja\sitio` (Agarrate Catalina) y `C:\Users\benja\EuroHard`, pero lo visual sale del brandbook de Fuerza.
-- **Publicar o hacer push** necesita aprobación del usuario.
+- **Commit y push siempre:** después de cada cambio verificado, commit y `git push origin main` sin preguntar. Cada push a `main` publica en https://fuerza-estudio.pages.dev (Cloudflare Pages conectado a GitHub); después del push, confirmar que el build quedó en producción.
 
 ## Comandos
 
