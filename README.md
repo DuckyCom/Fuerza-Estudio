@@ -160,7 +160,6 @@ y cambiar `--font-sans` / `--font-serif` en `src/styles/tokens.css`.
 | **Revisar los servicios asignados** a cada proyecto (salen de los tags de Behance) | `src/data/projects.ts` → `services` |
 | **Decidir si las imágenes se quedan en el CDN de Behance o se bajan al repo** | ver «Proyectos e imágenes» |
 | **Descripciones de servicios**: son copy propuesto, revisar con el equipo | `src/data/services.ts` |
-| **Conectar el formulario al Google Form** (hoy avisa que no está conectado) | `src/data/site.ts` → `CONTACT_FORM`, ver «Formulario de contacto» |
 | **Mail de contacto** (vacío = no se muestra) | `src/data/site.ts` → `email` |
 | **Dominio** (`fuerzaestudio.com` sale de las tarjetas del brandbook) | `src/data/site.ts` y `public/robots.txt` |
 | **Colores**: confirmar cuál HEX vale (ver arriba) | `src/styles/tokens.css` |

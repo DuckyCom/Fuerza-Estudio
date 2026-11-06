@@ -28,13 +28,14 @@ export const SITE = {
 // - `entries`: el `entry.NNNN` de cada pregunta, en el mismo orden que el sitio.
 // Mientras `action` esté vacío el formulario se ve pero no envía nada y lo avisa.
 export const CONTACT_FORM = {
-  action: '',
+  // Form «Contacto · Fuerza Estudio Creativo» (cuenta de Fuerza), creado el 2026-11-06.
+  action: 'https://docs.google.com/forms/d/e/1FAIpQLSfRYpLR4x02ZFpuSt-GeB7bdSbuPDObqG0VgjD0VzSHDZjDdQ/formResponse',
   entries: {
-    nombre: '', // Nombre y apellido
-    empresa: '', // Empresa o marca
-    email: '', // Email
-    telefono: '', // Código + teléfono (llega armado: «+54 11 2345 6789»)
-    mensaje: '', // Contanos un poco más
+    nombre: 'entry.1895308448', // Nombre y apellido
+    empresa: 'entry.1433014092', // Empresa o marca
+    email: 'entry.167615404', // Email
+    telefono: 'entry.1894714693', // Código + teléfono (llega armado: «+54 11 2345 6789»)
+    mensaje: 'entry.2085419443', // Contanos un poco más
   },
 } as const;
 
