@@ -70,19 +70,36 @@ La primera imagen es la portada. Se dejó afuera un GIF de 26 MB de Mauer Bar.
 El formulario del pie (`src/components/ContactForm.astro`) manda las respuestas a un
 **Google Form**, y el Google Form las vuelca en su hoja de cálculo. No hay servidor propio.
 
-1. Crear el Google Form con estas 5 preguntas, en este orden y todas de **respuesta corta**
-   salvo la última (**párrafo**):
-   Nombre y apellido · Empresa o marca · Email · Código + teléfono · Contanos un poco más.
-   Dejar **Empresa** y **Teléfono** como *no obligatorias* (en el sitio son opcionales;
-   si en Google son obligatorias, las respuestas sin esos datos se pierden).
-   En Configuración, no pedir inicio de sesión ni recolectar mails (si no, Google rechaza el envío).
-2. En «Respuestas», vincularlo a una hoja de cálculo.
-3. Sacar los ids: en el form, menú ⋮ → «Obtener enlace prellenado», completar cada pregunta
-   con algo, «Obtener vínculo» y copiar. En ese link aparece un `entry.NNNN=` por pregunta.
-4. Completar `CONTACT_FORM` en `src/data/site.ts`:
-   - `action`: el link del form cambiando `/viewform…` por `/formResponse`
-     (`https://docs.google.com/forms/d/e/<ID>/formResponse`).
-   - `entries`: cada `entry.NNNN` en su campo.
+**Lo que tiene que tener el Google Form:**
+
+| # | Pregunta | Tipo | Obligatoria en Google |
+| --- | --- | --- | --- |
+| 1 | Nombre y apellido | Respuesta corta | No |
+| 2 | Empresa o marca | Respuesta corta | No |
+| 3 | Email | Respuesta corta | No |
+| 4 | Código + teléfono | Respuesta corta | No |
+| 5 | Contanos un poco más | Párrafo | No |
+
+- Ninguna obligatoria ni con validación en Google: el sitio ya valida. Si Google exige
+  algo que el sitio dejó vacío, la respuesta se pierde sin aviso.
+- Sin pedir inicio de sesión, sin recolectar mails, sin «una respuesta por persona»:
+  cualquiera de esas opciones hace que Google rechace el envío desde el sitio.
+- Vinculado a una hoja de cálculo (Respuestas → «Vincular con Hojas de cálculo»).
+- Opcional: Respuestas → ⋮ → «Recibir notificaciones por correo electrónico».
+
+**Opción rápida (recomendada): `scripts/crear-google-form.gs`.** Crea el form con esa
+configuración, la hoja de respuestas, y escribe el bloque `CONTACT_FORM` listo para pegar.
+
+1. Con la cuenta de Google de Fuerza, entrar a https://script.google.com → «Proyecto nuevo».
+2. Pegar el archivo entero, guardar, elegir `crearFormContacto` y «Ejecutar»
+   (Google pide permisos para Forms y Hojas de cálculo).
+3. En «Registro de ejecución» copiar el bloque `CONTACT_FORM` y reemplazarlo en
+   `src/data/site.ts`.
+
+**A mano:** crear el form como la tabla de arriba y sacar los ids con ⋮ →
+«Obtener enlace prellenado» (completar cada pregunta, «Obtener vínculo»: aparece un
+`entry.NNNN=` por pregunta). En `CONTACT_FORM`, `action` es el link del form cambiando
+`/viewform…` por `/formResponse`, y cada `entry.NNNN` va en su campo.
 
 El teléfono llega armado en una sola respuesta (`+54 11 2345 6789`). Google no le contesta
 al navegador si el envío salió bien (la respuesta es opaca), así que el sitio valida todo

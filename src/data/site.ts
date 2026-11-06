@@ -21,7 +21,8 @@ export const SITE = {
 } as const;
 
 // Formulario de contacto del pie → Google Forms (las respuestas caen en su hoja de cálculo).
-// Cómo completarlo (ver README, «Formulario de contacto»):
+// Para crearlo: scripts/crear-google-form.gs (ver README, «Formulario de contacto»).
+// A mano:
 // - `action`: la URL del form terminada en /formResponse
 //   (https://docs.google.com/forms/d/e/<ID>/formResponse).
 // - `entries`: el `entry.NNNN` de cada pregunta, en el mismo orden que el sitio.
