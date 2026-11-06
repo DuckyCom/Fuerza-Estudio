@@ -20,6 +20,37 @@ export const SITE = {
   },
 } as const;
 
+// Formulario de contacto del pie → Google Forms (las respuestas caen en su hoja de cálculo).
+// Cómo completarlo (ver README, «Formulario de contacto»):
+// - `action`: la URL del form terminada en /formResponse
+//   (https://docs.google.com/forms/d/e/<ID>/formResponse).
+// - `entries`: el `entry.NNNN` de cada pregunta, en el mismo orden que el sitio.
+// Mientras `action` esté vacío el formulario se ve pero no envía nada y lo avisa.
+export const CONTACT_FORM = {
+  action: '',
+  entries: {
+    nombre: '', // Nombre y apellido
+    empresa: '', // Empresa o marca
+    email: '', // Email
+    telefono: '', // Código + teléfono (llega armado: «+54 11 2345 6789»)
+    mensaje: '', // Contanos un poco más
+  },
+} as const;
+
+export const PHONE_CODES = [
+  { value: '+54', label: 'AR +54' },
+  { value: '+598', label: 'UY +598' },
+  { value: '+56', label: 'CL +56' },
+  { value: '+595', label: 'PY +595' },
+  { value: '+591', label: 'BO +591' },
+  { value: '+55', label: 'BR +55' },
+  { value: '+51', label: 'PE +51' },
+  { value: '+57', label: 'CO +57' },
+  { value: '+52', label: 'MX +52' },
+  { value: '+34', label: 'ES +34' },
+  { value: '+1', label: 'US +1' },
+] as const;
+
 export const NAV = [
   { href: '/proyectos/', label: 'Proyectos' },
   { href: '/servicios/', label: 'Servicios' },

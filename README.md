@@ -43,6 +43,7 @@ sale de `.node-version` (22).
 | Proyectos (orden, destacados, textos, imágenes) | `src/data/projects.ts` |
 | Servicios y sus descripciones | `src/data/services.ts` |
 | Dominio, mail, redes, claim, menú | `src/data/site.ts` |
+| Formulario de contacto (Google Form, códigos de país) | `src/data/site.ts` → `CONTACT_FORM` / `PHONE_CODES` |
 | Colores, gradientes, tipografías, espaciados | `src/styles/tokens.css` |
 | Estilos generales y utilidades | `src/styles/global.css` |
 | Encabezado / pie | `src/components/Header.astro` / `Footer.astro` |
@@ -63,6 +64,31 @@ La primera imagen es la portada. Se dejó afuera un GIF de 26 MB de Mauer Bar.
   depender de Behance, bajar las imágenes a `public/proyectos/<slug>/` y apuntar ahí.
 - Sin imágenes, la tarjeta usa una portada tipográfica con la paleta del brandbook
   (`tone` y `mark` en `src/data/projects.ts`).
+
+### Formulario de contacto
+
+El formulario del pie (`src/components/ContactForm.astro`) manda las respuestas a un
+**Google Form**, y el Google Form las vuelca en su hoja de cálculo. No hay servidor propio.
+
+1. Crear el Google Form con estas 5 preguntas, en este orden y todas de **respuesta corta**
+   salvo la última (**párrafo**):
+   Nombre y apellido · Empresa o marca · Email · Código + teléfono · Contanos un poco más.
+   Dejar **Empresa** y **Teléfono** como *no obligatorias* (en el sitio son opcionales;
+   si en Google son obligatorias, las respuestas sin esos datos se pierden).
+   En Configuración, no pedir inicio de sesión ni recolectar mails (si no, Google rechaza el envío).
+2. En «Respuestas», vincularlo a una hoja de cálculo.
+3. Sacar los ids: en el form, menú ⋮ → «Obtener enlace prellenado», completar cada pregunta
+   con algo, «Obtener vínculo» y copiar. En ese link aparece un `entry.NNNN=` por pregunta.
+4. Completar `CONTACT_FORM` en `src/data/site.ts`:
+   - `action`: el link del form cambiando `/viewform…` por `/formResponse`
+     (`https://docs.google.com/forms/d/e/<ID>/formResponse`).
+   - `entries`: cada `entry.NNNN` en su campo.
+
+El teléfono llega armado en una sola respuesta (`+54 11 2345 6789`). Google no le contesta
+al navegador si el envío salió bien (la respuesta es opaca), así que el sitio valida todo
+antes de mandar y muestra «¡Gracias!» si no hubo error de red. Probarlo una vez y ver que
+la fila aparezca en la hoja. Mientras `action` esté vacío, el form avisa que no está
+conectado y deriva a Instagram. Tiene un campo trampa oculto para bots.
 
 ## Marca
 
@@ -114,7 +140,8 @@ y cambiar `--font-sans` / `--font-serif` en `src/styles/tokens.css`.
 | **Revisar los servicios asignados** a cada proyecto (salen de los tags de Behance) | `src/data/projects.ts` → `services` |
 | **Decidir si las imágenes se quedan en el CDN de Behance o se bajan al repo** | ver «Proyectos e imágenes» |
 | **Descripciones de servicios**: son copy propuesto, revisar con el equipo | `src/data/services.ts` |
-| **Mail de contacto** (vacío = no se muestra; hoy el contacto es por Instagram) | `src/data/site.ts` → `email` |
+| **Conectar el formulario al Google Form** (hoy avisa que no está conectado) | `src/data/site.ts` → `CONTACT_FORM`, ver «Formulario de contacto» |
+| **Mail de contacto** (vacío = no se muestra) | `src/data/site.ts` → `email` |
 | **Dominio** (`fuerzaestudio.com` sale de las tarjetas del brandbook) | `src/data/site.ts` y `public/robots.txt` |
 | **Colores**: confirmar cuál HEX vale (ver arriba) | `src/styles/tokens.css` |
 | **Imagen para redes** (Open Graph, 1200×630) | falta crearla y sumarla en `src/layouts/Base.astro` |

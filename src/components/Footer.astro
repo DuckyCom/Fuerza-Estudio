@@ -1,5 +1,6 @@
 ---
 import Brand from './Brand.astro';
+import ContactForm from './ContactForm.astro';
 import { NAV, SITE } from '../data/site';
 const year = new Date().getFullYear();
 ---
@@ -16,12 +17,8 @@ const year = new Date().getFullYear();
       </h2>
       <div class="footer__actions">
         <p class="lead serif">¿Tenés un proyecto en mente? Contanos.</p>
-        <div class="footer__buttons">
-          <a class="btn btn--rosa" href={SITE.social.instagram.url} target="_blank" rel="noopener">
-            Escribinos por Instagram
-          </a>
-          {SITE.email && <a class="link-arrow" href={`mailto:${SITE.email}`}>{SITE.email} <span class="arrow" /></a>}
-        </div>
+        <ContactForm />
+        {SITE.email && <a class="link-arrow" href={`mailto:${SITE.email}`}>{SITE.email} <span class="arrow" /></a>}
       </div>
     </div>
 
@@ -58,8 +55,8 @@ const year = new Date().getFullYear();
 </footer>
 
 <style>
-  /* Al tocar «Contacto» (#contacto) el pie queda arriba de todo: el bloque del
-     título + botón tiene que entrar en una pantalla, por eso el alto manda. */
+  /* Al tocar «Contacto» (#contacto) el pie queda arriba de todo: el título se
+     limita por el alto de pantalla para que se vea junto con el formulario. */
   .footer {
     padding-block: clamp(3.5rem, 2rem + 5vw, 6rem) 1.5rem;
     overflow: hidden;
@@ -89,14 +86,8 @@ const year = new Date().getFullYear();
   .footer__actions {
     display: grid;
     gap: 1.75rem;
-    max-width: 38rem;
+    max-width: 44rem;
     margin-top: 1rem;
-  }
-  .footer__buttons {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 1rem 2rem;
   }
 
   .footer__grid {
@@ -151,8 +142,12 @@ const year = new Date().getFullYear();
 
   @media (min-width: 64rem) {
     .footer__cta {
-      grid-template-columns: 1.6fr 1fr;
-      align-items: end;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+      align-items: start;
+      column-gap: var(--gutter);
+    }
+    .footer__actions {
+      margin-top: 0;
     }
     .footer__cta .label {
       grid-column: 1 / -1;

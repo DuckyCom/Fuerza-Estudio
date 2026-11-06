@@ -1,0 +1,345 @@
+---
+// Formulario de contacto. Manda las respuestas a un Google Form (ver CONTACT_FORM en
+// src/data/site.ts). Va sobre fondo azul: todo el texto es rosa o blanco.
+import { CONTACT_FORM, PHONE_CODES, SITE } from '../data/site';
+
+const config = JSON.stringify(CONTACT_FORM);
+---
+
+<form class="cf" novalidate data-config={config}>
+  <div class="cf__row">
+    <div class="cf__field">
+      <label for="cf-nombre">Nombre y apellido</label>
+      <input id="cf-nombre" name="nombre" type="text" autocomplete="name" required aria-describedby="cf-nombre-err" />
+      <p class="cf__err" id="cf-nombre-err" data-msg="Contanos cómo te llamás."></p>
+    </div>
+    <div class="cf__field">
+      <label for="cf-empresa">Empresa o marca <span class="cf__opt">(opcional)</span></label>
+      <input id="cf-empresa" name="empresa" type="text" autocomplete="organization" />
+    </div>
+  </div>
+
+  <div class="cf__row">
+    <div class="cf__field">
+      <label for="cf-email">Email</label>
+      <input id="cf-email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="cf-email-err" />
+      <p class="cf__err" id="cf-email-err" data-msg="Revisá el email."></p>
+    </div>
+    <fieldset class="cf__field cf__tel">
+      <legend>Código + teléfono <span class="cf__opt">(opcional)</span></legend>
+      <div class="cf__tel-inputs">
+        <select name="codigo" aria-label="Código de país" autocomplete="tel-country-code">
+          {PHONE_CODES.map((c) => <option value={c.value}>{c.label}</option>)}
+        </select>
+        <input name="telefono" type="tel" inputmode="tel" autocomplete="tel-national" aria-label="Teléfono" aria-describedby="cf-tel-err" />
+      </div>
+      <p class="cf__err" id="cf-tel-err" data-msg="Revisá el teléfono."></p>
+    </fieldset>
+  </div>
+
+  <div class="cf__field">
+    <label for="cf-mensaje">Contanos un poco más</label>
+    <textarea id="cf-mensaje" name="mensaje" rows="4" required aria-describedby="cf-mensaje-err"
+      placeholder="Qué necesitás, para cuándo y en qué momento está tu marca."></textarea>
+    <p class="cf__err" id="cf-mensaje-err" data-msg="Contanos un poco más (mínimo 10 caracteres)."></p>
+  </div>
+
+  <!-- Trampa para bots: las personas no lo ven ni lo completan. -->
+  <div class="cf__trap" aria-hidden="true">
+    <label>Sitio web <input name="sitio" type="text" tabindex="-1" autocomplete="off" /></label>
+  </div>
+
+  <div class="cf__foot">
+    <button class="btn btn--rosa cf__submit" type="submit">
+      <span class="cf__label">Enviar</span>
+    </button>
+    <p class="cf__alt">
+      ¿Preferís Instagram?{' '}
+      <a href={SITE.social.instagram.url} target="_blank" rel="noopener">Escribinos a {SITE.social.instagram.label}</a>
+    </p>
+  </div>
+
+  <p class="cf__status" role="status" aria-live="polite"></p>
+</form>
+
+<style>
+  .cf {
+    display: grid;
+    gap: 1.25rem;
+    container-type: inline-size;
+  }
+  .cf__row {
+    display: grid;
+    gap: 1.25rem;
+  }
+  /* Dos columnas solo si el form tiene ancho (el teléfono necesita lugar). */
+  @container (min-width: 34rem) {
+    .cf__row {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+    }
+  }
+
+  .cf__field {
+    display: grid;
+    gap: 0.5rem;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .cf label,
+  .cf legend {
+    padding: 0;
+    font-size: var(--fs-sm);
+    font-weight: 500;
+  }
+  .cf legend {
+    margin-bottom: 0.5rem;
+  }
+  .cf__opt {
+    font-weight: 400;
+    opacity: 0.7;
+  }
+
+  .cf input,
+  .cf select,
+  .cf textarea {
+    width: 100%;
+    min-width: 0;
+    padding: 0.85rem 1rem;
+    border: 1px solid color-mix(in srgb, var(--rosa) 45%, transparent);
+    border-radius: 0.85rem;
+    background: color-mix(in srgb, var(--rosa) 8%, transparent);
+    color: var(--rosa);
+    font: inherit;
+    font-size: var(--fs-base);
+    transition: border-color 0.2s, background-color 0.2s;
+  }
+  .cf textarea {
+    resize: vertical;
+    min-height: 8.5rem;
+  }
+  .cf ::placeholder {
+    color: var(--rosa);
+    opacity: 0.55;
+  }
+  .cf input:hover,
+  .cf select:hover,
+  .cf textarea:hover {
+    border-color: color-mix(in srgb, var(--rosa) 75%, transparent);
+  }
+  .cf input:focus-visible,
+  .cf select:focus-visible,
+  .cf textarea:focus-visible {
+    outline: 2px solid var(--rosa);
+    outline-offset: 2px;
+    border-color: var(--rosa);
+    background: color-mix(in srgb, var(--rosa) 14%, transparent);
+  }
+  .cf [aria-invalid='true'] {
+    border: 2px solid var(--blanco);
+  }
+
+  .cf__tel-inputs {
+    display: grid;
+    grid-template-columns: 7rem minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+  .cf select {
+    appearance: none;
+    padding-right: 2rem;
+    background-image:
+      linear-gradient(45deg, transparent 50%, var(--rosa) 50%),
+      linear-gradient(135deg, var(--rosa) 50%, transparent 50%);
+    background-position:
+      calc(100% - 1.05rem) 52%,
+      calc(100% - 0.7rem) 52%;
+    background-size: 0.35rem 0.35rem;
+    background-repeat: no-repeat;
+    cursor: pointer;
+  }
+  .cf option {
+    background: var(--rosa);
+    color: var(--azul);
+  }
+
+  /* Errores: en blanco (naranja/fucsia sobre azul no se usa para texto chico). */
+  .cf__err {
+    color: var(--blanco);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+  }
+  .cf__err:empty {
+    display: none;
+  }
+  .cf__err::before {
+    content: '↑ ';
+  }
+
+  .cf__trap {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .cf__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.75rem;
+    margin-top: 0.25rem;
+  }
+  .cf__submit {
+    border: 0;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .cf__submit[disabled] {
+    opacity: 0.6;
+    cursor: progress;
+    transform: none;
+  }
+  .cf__alt {
+    font-size: var(--fs-sm);
+  }
+  .cf__alt a {
+    text-underline-offset: 0.2em;
+  }
+
+  .cf__status {
+    font-size: var(--fs-sm);
+    font-weight: 500;
+  }
+  .cf__status:empty {
+    display: none;
+  }
+
+  /* Enviado: queda solo el mensaje de gracias. */
+  .cf.is-sent > :not(.cf__status) {
+    display: none;
+  }
+  .cf.is-sent .cf__status {
+    font-family: var(--font-serif);
+    font-variation-settings: 'SOFT' 100;
+    font-weight: 300;
+    font-size: var(--fs-xl);
+    line-height: 1.2;
+  }
+</style>
+
+<script>
+  type Config = {
+    action: string;
+    entries: Record<'nombre' | 'empresa' | 'email' | 'telefono' | 'mensaje', string>;
+  };
+
+  const MSG = {
+    sending: 'Enviando…',
+    sent: '¡Gracias! Recibimos tu mensaje. Te vamos a escribir a la brevedad.',
+    error: 'No pudimos enviar el mensaje. Probá de nuevo o escribinos por Instagram.',
+    offline: 'El formulario todavía no está conectado. Mientras tanto, escribinos por Instagram.',
+  };
+
+  for (const form of document.querySelectorAll<HTMLFormElement>('form.cf')) {
+    const config: Config = JSON.parse(form.dataset.config ?? '{}');
+    const status = form.querySelector<HTMLElement>('.cf__status')!;
+    const button = form.querySelector<HTMLButtonElement>('.cf__submit')!;
+    const label = button.querySelector<HTMLElement>('.cf__label')!;
+    const field = <T extends HTMLElement = HTMLInputElement>(name: string) =>
+      form.elements.namedItem(name) as unknown as T;
+
+    const setError = (el: HTMLElement, bad: boolean) => {
+      el.setAttribute('aria-invalid', String(bad));
+      const err = document.getElementById(el.getAttribute('aria-describedby') ?? '');
+      if (err) err.textContent = bad ? (err.dataset.msg ?? '') : '';
+    };
+
+    const checks: [string, (v: string) => boolean][] = [
+      ['nombre', (v) => v.trim().length > 1],
+      ['email', (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())],
+      ['telefono', (v) => {
+        const digits = v.replace(/\D/g, '');
+        return !v.trim() || (digits.length >= 6 && digits.length <= 15);
+      }],
+      ['mensaje', (v) => v.trim().length >= 10],
+    ];
+
+    const validate = () => {
+      let first: HTMLElement | null = null;
+      for (const [name, ok] of checks) {
+        const el = field(name);
+        const bad = !ok(el.value);
+        setError(el, bad);
+        if (bad && !first) first = el;
+      }
+      return first;
+    };
+
+    // Una vez marcado un error, se limpia apenas se corrige.
+    form.addEventListener('input', (e) => {
+      const el = e.target as HTMLInputElement;
+      const check = checks.find(([name]) => name === el.name);
+      if (check && el.getAttribute('aria-invalid') === 'true' && check[1](el.value)) setError(el, false);
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const firstBad = validate();
+      if (firstBad) {
+        firstBad.focus();
+        return;
+      }
+
+      const tel = field('telefono').value.trim();
+      const data = {
+        nombre: field('nombre').value.trim(),
+        empresa: field('empresa').value.trim(),
+        email: field('email').value.trim(),
+        telefono: tel ? `${field<HTMLSelectElement>('codigo').value} ${tel}` : '',
+        mensaje: field<HTMLTextAreaElement>('mensaje').value.trim(),
+      };
+
+      // Bot: se hace de cuenta que salió bien y no se manda nada.
+      if (field('sitio').value) {
+        form.classList.add('is-sent');
+        status.textContent = MSG.sent;
+        return;
+      }
+
+      if (!config.action) {
+        console.info('[contacto] formulario sin conectar; no se envió nada.', data);
+        status.textContent = MSG.offline;
+        return;
+      }
+
+      const body = new URLSearchParams();
+      for (const [key, value] of Object.entries(data)) {
+        const entry = config.entries[key as keyof Config['entries']];
+        if (entry && value) body.append(entry, value);
+      }
+
+      button.disabled = true;
+      label.textContent = MSG.sending;
+      status.textContent = '';
+      try {
+        // Google Forms no devuelve CORS: la respuesta es opaca y solo se detectan
+        // errores de red. Por eso se valida todo antes de mandar.
+        await fetch(config.action, { method: 'POST', mode: 'no-cors', body });
+        form.reset();
+        form.classList.add('is-sent');
+        status.textContent = MSG.sent;
+        status.setAttribute('tabindex', '-1');
+        status.focus();
+      } catch {
+        status.textContent = MSG.error;
+      } finally {
+        button.disabled = false;
+        label.textContent = 'Enviar';
+      }
+    });
+  }
+</script>
