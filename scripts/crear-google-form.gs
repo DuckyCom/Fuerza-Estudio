@@ -34,8 +34,15 @@ function crearFormContacto() {
     .setAcceptingResponses(true)
     .setConfirmationMessage('¡Gracias! Recibimos tu mensaje.');
 
-  // Solo existe en cuentas de Google Workspace; en cuentas comunes no hace falta.
-  try { form.setRequireLogin(false); } catch (e) {}
+  // En cuentas de organización (Google Workspace) los forms nacen «solo para usuarios
+  // de la organización», y así el sitio no puede enviar. Se abre a cualquiera.
+  let avisoLogin = '';
+  try {
+    form.setRequireLogin(false);
+    if (form.requiresLogin()) avisoLogin = 'sigue pidiendo inicio de sesión';
+  } catch (e) {
+    avisoLogin = 'no se pudo quitar el inicio de sesión (' + e.message + ')';
+  }
   // Los forms nuevos pueden nacer «sin publicar» y así no aceptan respuestas.
   try { if (typeof form.setPublished === 'function') form.setPublished(true); } catch (e) {}
 
@@ -50,12 +57,9 @@ function crearFormContacto() {
 
   // Los entry.NNNN no son los ids de los ítems: se sacan de un link prellenado.
   const prellenado = form.createResponse();
+  // (addTextItem / addParagraphTextItem ya devuelven el ítem tipado: createResponse va directo.)
   items.forEach((item, i) => {
-    const marca = '__' + PREGUNTAS[i].key + '__';
-    const respuesta = PREGUNTAS[i].tipo === 'parrafo'
-      ? item.asParagraphTextItem().createResponse(marca)
-      : item.asTextItem().createResponse(marca);
-    prellenado.withItemResponse(respuesta);
+    prellenado.withItemResponse(item.createResponse('__' + PREGUNTAS[i].key + '__'));
   });
   const url = prellenado.toPrefilledUrl();
 
@@ -80,4 +84,11 @@ function crearFormContacto() {
   Logger.log('Form (público):     ' + form.getPublishedUrl());
   Logger.log('Hoja de respuestas: ' + hoja.getUrl());
   Logger.log('\nPegar en src/data/site.ts:\n\n' + bloque);
+  if (avisoLogin) {
+    Logger.log(
+      '\nATENCIÓN: el form ' + avisoLogin + '. Así el sitio no puede enviar respuestas.\n' +
+      'Abrir el form → Configuración → Respuestas → desactivar «Restringir a usuarios de la ' +
+      'organización». Si no aparece, lo bloquea el administrador de Google Workspace.'
+    );
+  }
 }

@@ -84,6 +84,9 @@ El formulario del pie (`src/components/ContactForm.astro`) manda las respuestas 
   algo que el sitio dejó vacío, la respuesta se pierde sin aviso.
 - Sin pedir inicio de sesión, sin recolectar mails, sin «una respuesta por persona»:
   cualquiera de esas opciones hace que Google rechace el envío desde el sitio.
+  En cuentas de organización (Google Workspace) revisar que esté desactivado
+  «Restringir a usuarios de la organización» (Configuración → Respuestas); el script lo
+  intenta y avisa en el registro si el administrador no lo deja.
 - Vinculado a una hoja de cálculo (Respuestas → «Vincular con Hojas de cálculo»).
 - Opcional: Respuestas → ⋮ → «Recibir notificaciones por correo electrónico».
 
