@@ -1,0 +1,55 @@
+/* ==========================================================================
+   Tokens de marca — Fuerza Brandbook 2024 (docs/brand/Fuerza_Brandbook_2024.pdf)
+
+   COLOR: los valores son los que están aplicados en las piezas del brandbook
+   (muestras de la pág. 3 y todas las aplicaciones). Las etiquetas impresas de esa
+   página dicen otra cosa (#1e22f0, #ffe2fa, #e27dc0, #f6622a): ver README,
+   «Colores». Si la marca confirma las etiquetas, se cambian solo acá.
+
+   TIPOGRAFÍA: TT Hoves Pro y Cooper Lt BT son pagas. Mientras no haya licencia
+   web se usan sustitutos libres; para cambiar, tocar solo --font-sans / --font-serif.
+   ========================================================================== */
+
+:root {
+  /* Paleta */
+  --azul: #2c00fa;
+  --rosa: #f8d7db;
+  --fucsia: #f174c3;
+  --naranja: #ff5500;
+  --negro: #242424;
+  --blanco: #ffffff;
+
+  /* Tonos de apoyo derivados (solo para estados y bordes) */
+  --azul-hondo: #1f00b8;
+  --rosa-hondo: #efc3c9;
+  --linea: color-mix(in srgb, currentColor 22%, transparent);
+
+  /* Gradientes (brandbook pág. 6) */
+  --grad-azul: radial-gradient(120% 90% at 85% 100%, #1b8cff 0%, #2c00fa 55%);
+  --grad-naranja: radial-gradient(110% 90% at 90% 100%, #e03a10 0%, #ff5500 60%);
+  --grad-rosa: linear-gradient(120deg, #fde6f4 0%, #f8d7db 55%, #f3c6e8 100%);
+  --grad-fucsia: radial-gradient(110% 100% at 30% 80%, #f9a3d6 0%, #f174c3 60%, #e06db7 100%);
+
+  /* Tipografía */
+  --font-sans: 'Hanken Grotesk Variable', 'TT Hoves Pro', system-ui, sans-serif;
+  --font-serif: 'Fraunces Variable', 'Cooper Lt BT', Georgia, serif;
+
+  --fs-xs: 0.8125rem;
+  --fs-sm: 0.9375rem;
+  --fs-base: 1.0625rem;
+  --fs-lg: clamp(1.1875rem, 1.05rem + 0.5vw, 1.4375rem);
+  --fs-xl: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
+  --fs-2xl: clamp(2rem, 1.4rem + 2.6vw, 3.75rem);
+  --fs-3xl: clamp(2.75rem, 1.6rem + 5vw, 6.5rem);
+  --fs-4xl: clamp(3.25rem, 1.5rem + 8vw, 10rem);
+
+  /* Espaciado */
+  --gutter: clamp(1rem, 0.5rem + 2.5vw, 3rem);
+  --section: clamp(4.5rem, 3rem + 7vw, 10rem);
+  --max: 90rem;
+  --radius: 1.25rem;
+
+  /* Movimiento */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-wave: cubic-bezier(0.65, 0, 0.35, 1);
+}

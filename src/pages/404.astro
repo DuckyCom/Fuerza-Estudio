@@ -1,0 +1,50 @@
+---
+import Base from '../layouts/Base.astro';
+import Brand from '../components/Brand.astro';
+---
+
+<Base title="Página no encontrada" headerTone="azul">
+  <section class="nf t-azul" aria-labelledby="title">
+    <Brand name="swoosh-a" class="nf__swoosh" />
+    <div class="wrap nf__inner">
+      <p class="label">Error 404</p>
+      <h1 id="title" class="display">
+        Esta página <br /><span class="serif-it">reventó.</span>
+      </h1>
+      <p class="lead">No encontramos lo que buscabas, pero hay mucho más para ver.</p>
+      <div class="nf__actions">
+        <a class="btn btn--rosa" href="/">Ir al inicio</a>
+        <a class="link-arrow" href="/proyectos/">Ver proyectos <span class="arrow"></span></a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    position: relative;
+    overflow: hidden;
+    min-height: 90svh;
+    display: flex;
+    align-items: center;
+  }
+  .nf :global(.nf__swoosh) {
+    position: absolute;
+    width: min(64rem, 130vw);
+    right: -15%;
+    bottom: -12%;
+    color: var(--fucsia);
+  }
+  .nf__inner {
+    position: relative;
+    display: grid;
+    gap: 1.75rem;
+    padding-block: 9rem 5rem;
+  }
+  .nf__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 2rem;
+  }
+</style>

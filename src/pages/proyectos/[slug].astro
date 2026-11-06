@@ -1,0 +1,192 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Base from '../../layouts/Base.astro';
+import ProjectCover from '../../components/ProjectCover.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { PROJECTS, formatDate, type Project } from '../../data/projects';
+import { serviceBySlug } from '../../data/services';
+
+export const getStaticPaths = (() =>
+  PROJECTS.map((project, i) => ({
+    params: { slug: project.slug },
+    props: { project, next: PROJECTS[(i + 1) % PROJECTS.length] },
+  }))) satisfies GetStaticPaths;
+
+interface Props {
+  project: Project;
+  next: Project;
+}
+const { project, next } = Astro.props;
+const services = project.services.map(serviceBySlug).filter((s) => s !== undefined);
+const team = ['Fuerza Estudio', ...(project.credits ?? [])];
+---
+
+<Base
+  title={project.title}
+  description={project.summary ? `${project.title}: ${project.summary}` : `${project.title}, un proyecto de Fuerza Estudio Creativo.`}
+  headerTone="rosa"
+>
+  <article>
+    <header class="p-hero t-rosa">
+      <div class="wrap">
+        <p class="label"><a href="/proyectos/">Proyectos</a></p>
+        <h1 class="h1 p-hero__title">{project.title}</h1>
+
+        <dl class="p-hero__facts">
+          <div>
+            <dt class="caps">Publicado</dt>
+            <dd>{formatDate(project.date)}</dd>
+          </div>
+          {
+            services.length > 0 && (
+              <div>
+                <dt class="caps">Servicios</dt>
+                <dd>
+                  {services.map((s, i) => (
+                    <>
+                      {i > 0 && ', '}
+                      <a href={`/servicios/#${s.slug}`}>{s.name}</a>
+                    </>
+                  ))}
+                </dd>
+              </div>
+            )
+          }
+          <div>
+            <dt class="caps">Equipo</dt>
+            <dd>{team.join(', ')}</dd>
+          </div>
+        </dl>
+
+        {project.summary && <p class="lead serif p-hero__summary">{project.summary}</p>}
+      </div>
+    </header>
+
+    <div class="p-body t-rosa">
+      <div class="wrap">
+        {
+          project.gallery.length > 0 ? (
+            <div class="p-gallery">
+              {project.gallery.map((src, i) => (
+                <img
+                  src={src}
+                  alt={i === 0 ? `${project.title}, pieza principal` : ''}
+                  loading={i < 2 ? 'eager' : 'lazy'}
+                  fetchpriority={i === 0 ? 'high' : undefined}
+                  decoding="async"
+                  referrerpolicy="no-referrer"
+                />
+              ))}
+            </div>
+          ) : (
+            <ProjectCover project={project} size="hero" eager />
+          )
+        }
+
+        <div class="p-behance">
+          <p class="lead">Este proyecto también está publicado en nuestro Behance.</p>
+          <a class="btn" href={project.behance} target="_blank" rel="noopener">Ver en Behance</a>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <section class="section t-rosa p-next" aria-labelledby="next-title">
+    <div class="wrap p-next__grid">
+      <div>
+        <p class="label">Siguiente</p>
+        <h2 id="next-title" class="h2 p-next__title">{next.title}</h2>
+        <a class="link-arrow" href="/proyectos/">Todos los proyectos <span class="arrow"></span></a>
+      </div>
+      <ProjectCard project={next} />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .p-hero {
+    padding-top: clamp(8rem, 18vh, 12rem);
+    padding-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .p-hero .label a {
+    text-decoration: inherit;
+  }
+  .p-hero__title {
+    margin-top: 1.25rem;
+    max-width: 16ch;
+  }
+  .p-hero__facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 4rem;
+    margin: 2.5rem 0 0;
+  }
+  .p-hero__facts dt {
+    opacity: 0.7;
+    margin-bottom: 0.35rem;
+  }
+  .p-hero__facts dd {
+    margin: 0;
+    font-size: var(--fs-lg);
+  }
+  .p-hero__facts a {
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.15em;
+  }
+  .p-hero__summary {
+    margin-top: 2rem;
+    max-width: 36rem;
+    color: var(--negro);
+  }
+  .p-hero__facts dd {
+    color: var(--negro);
+  }
+
+  .p-body {
+    padding-bottom: var(--section);
+  }
+  /* Las piezas de Behance están pensadas para verse una debajo de la otra, a todo el ancho. */
+  .p-gallery {
+    display: grid;
+    gap: clamp(0.5rem, 1vw, 1rem);
+    max-width: 75rem;
+    margin-inline: auto;
+  }
+  .p-gallery img {
+    width: 100%;
+    height: auto;
+    border-radius: calc(var(--radius) * 0.6);
+    background: var(--rosa-hondo);
+  }
+  .p-behance {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem 3rem;
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+  .p-behance .lead {
+    max-width: 30rem;
+    color: var(--negro);
+  }
+
+  .p-next__grid {
+    display: grid;
+    gap: 2.5rem var(--gutter);
+    color: var(--negro);
+  }
+  .p-next .label,
+  .p-next__title {
+    color: var(--azul);
+  }
+  .p-next__title {
+    margin: 1rem 0 1.5rem;
+  }
+  @media (min-width: 48rem) {
+    .p-next__grid {
+      grid-template-columns: 1.4fr 1fr;
+      align-items: end;
+    }
+  }
+</style>

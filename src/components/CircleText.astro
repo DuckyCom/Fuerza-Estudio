@@ -1,0 +1,57 @@
+---
+// Bajada circular, como «ESTUDIO CREATIVO» / «CREAR O REVENTAR» del brandbook (pág. 2).
+import Brand from './Brand.astro';
+
+interface Props {
+  text?: string;
+  class?: string;
+  spin?: boolean;
+}
+const { text = 'Crear o reventar · Estudio creativo · ', class: className, spin = true } = Astro.props;
+const id = `circ-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<span class:list={['circle', { spin }, className]} aria-hidden="true">
+  <svg viewBox="0 0 200 200">
+    <defs>
+      <path id={id} d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0" />
+    </defs>
+    <text>
+      <textPath href={`#${id}`} textLength="488">{text.toUpperCase()}</textPath>
+    </text>
+  </svg>
+  <Brand name="isotipo" class="circle__mark" />
+</span>
+
+<style>
+  .circle {
+    position: relative;
+    display: inline-block;
+    width: 9rem;
+    aspect-ratio: 1;
+  }
+  svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  text {
+    fill: currentColor;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+  }
+  .spin svg {
+    animation: spin 22s linear infinite;
+  }
+  .circle :global(.circle__mark) {
+    position: absolute;
+    inset: 32%;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>

@@ -1,0 +1,320 @@
+---
+import Base from '../layouts/Base.astro';
+import Brand from '../components/Brand.astro';
+import CircleText from '../components/CircleText.astro';
+import Marquee from '../components/Marquee.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { featuredProjects } from '../data/projects';
+import { SERVICES } from '../data/services';
+import { SITE } from '../data/site';
+
+const projects = featuredProjects();
+---
+
+<Base headerTone="azul">
+  <!-- Hero -->
+  <section class="hero t-azul" aria-labelledby="hero-title">
+    <Brand name="swoosh-b" class="hero__swoosh" />
+    <div class="wrap hero__inner">
+      <div class="hero__top">
+        <h1 id="hero-title" class="hero__claim">
+          <span class="visually-hidden">{SITE.fullName}. </span>
+          Crear o <br /><span class="serif-it">reventar.</span>
+        </h1>
+        <CircleText class="hero__circle" />
+      </div>
+
+      <div class="hero__bottom">
+        <p class="hero__intro">
+          Estudio creativo de Buenos Aires.<br />
+          Identidad de marca, redes sociales y contenido.
+        </p>
+        <a class="link-arrow" href="/proyectos/">Ver proyectos <span class="arrow"></span></a>
+      </div>
+
+      <Brand name="logo" class="hero__logo" />
+    </div>
+  </section>
+
+  <Marquee class="t-fucsia" items={['Crear o reventar.', 'Le damos fuerza a tu marca.']} />
+
+  <!-- Estudio -->
+  <section class="section t-rosa intro" aria-labelledby="intro-title">
+    <div class="wrap intro__grid">
+      <p class="label">Estudio</p>
+      <div>
+        <h2 id="intro-title" class="h1 reveal">
+          Somos un equipo creativo. Le damos <span class="serif-it">fuerza</span> a tu marca.
+        </h2>
+        <p class="lead intro__text reveal">
+          Nos especializamos en identidad de marca, estrategia de redes sociales y generación de contenido.
+        </p>
+      </div>
+      <Brand name="trazos" class="intro__trazos" />
+    </div>
+  </section>
+
+  <!-- Proyectos -->
+  <section class="section t-rosa projects" aria-labelledby="projects-title">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="projects-title" class="h2">Proyectos</h2>
+        <a class="link-arrow" href="/proyectos/">Ver todos <span class="arrow"></span></a>
+      </div>
+      <div class="projects__grid">
+        {projects.map((p, i) => <ProjectCard project={p} index={i} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Servicios -->
+  <section class="section t-negro services" aria-labelledby="services-title">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="services-title" class="h2">
+          Capacidad para hacer<br /><span class="serif-it">lo que quieras.</span>
+        </h2>
+        <a class="link-arrow" href="/servicios/">Servicios <span class="arrow"></span></a>
+      </div>
+      <ol role="list" class="services__list">
+        {
+          SERVICES.map((s, i) => (
+            <li class="services__item reveal">
+              <a href={`/servicios/#${s.slug}`}>
+                <span class="services__n serif">{String(i + 1).padStart(2, '0')}</span>
+                <span class="services__name">{s.name}</span>
+                <Brand name="icon-ola" class="services__mark mark-h" />
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- Manifiesto -->
+  <section class="section t-fucsia statement" aria-label="Manifiesto">
+    <Brand name="swoosh-a" class="statement__swoosh" />
+    <div class="wrap">
+      <p class="statement__text serif reveal">
+        Creemos que el arte inspira y el diseño motiva.
+      </p>
+      <p class="statement__sub reveal">Estamos acá para darle forma a tus ideas.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    min-height: 100svh;
+    display: flex;
+  }
+  .hero :global(.hero__swoosh) {
+    position: absolute;
+    width: max(46rem, 72vw);
+    left: 40%;
+    top: 16%;
+    color: var(--fucsia);
+    opacity: 0.95;
+    transform: rotate(-6deg);
+    animation: float 14s var(--ease-wave) infinite alternate;
+  }
+  .hero__inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: clamp(2rem, 4vw, 3.5rem);
+    padding-top: clamp(7rem, 14vh, 10rem);
+    padding-bottom: clamp(1.25rem, 3vw, 2.5rem);
+  }
+  .hero__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+    flex: 1;
+  }
+  .hero__claim {
+    font-size: var(--fs-4xl);
+    font-weight: 400;
+    line-height: 0.9;
+    letter-spacing: -0.045em;
+  }
+  .hero__claim .serif-it {
+    letter-spacing: -0.03em;
+  }
+  .hero :global(.hero__circle) {
+    width: clamp(6.5rem, 4rem + 8vw, 11rem);
+    flex: none;
+  }
+  .hero__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+  }
+  .hero__intro {
+    font-size: var(--fs-lg);
+    line-height: 1.3;
+    max-width: 30rem;
+  }
+  .hero :global(.hero__logo) {
+    width: 100%;
+  }
+
+  @media (max-width: 47.99rem) {
+    .hero__claim {
+      font-size: max(var(--fs-4xl), 17vw);
+    }
+    .hero :global(.hero__swoosh) {
+      width: 135vw;
+      left: -12%;
+      top: 34%;
+    }
+  }
+
+  @keyframes float {
+    to {
+      transform: rotate(-1deg) translate(-3%, 4%);
+    }
+  }
+
+  /* ---------- Intro ---------- */
+  .intro {
+    padding-bottom: 0;
+  }
+  .intro__grid {
+    position: relative;
+    display: grid;
+    gap: 2rem;
+  }
+  .intro__grid h2 {
+    max-width: 18ch;
+  }
+  .intro__text {
+    margin-top: 2rem;
+    max-width: 38rem;
+    color: var(--negro);
+  }
+  .intro :global(.intro__trazos) {
+    width: clamp(10rem, 22vw, 22rem);
+    color: var(--fucsia);
+    justify-self: end;
+  }
+  @media (min-width: 64rem) {
+    .intro__grid {
+      grid-template-columns: 12rem 1fr auto;
+      align-items: start;
+    }
+    .intro__grid .label {
+      padding-top: 1.2rem;
+    }
+    .intro :global(.intro__trazos) {
+      align-self: end;
+    }
+  }
+
+  /* ---------- Encabezado de sección ---------- */
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    margin-bottom: clamp(2rem, 4vw, 3.5rem);
+  }
+
+  /* ---------- Proyectos ---------- */
+  .projects__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+    gap: clamp(2rem, 3vw, 3rem) var(--gutter);
+    color: var(--negro);
+  }
+  @media (min-width: 64rem) {
+    .projects__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .projects__grid > :global(:nth-child(3n + 2)) {
+      margin-top: 4rem;
+    }
+  }
+
+  /* ---------- Servicios ---------- */
+  .services__list {
+    border-top: 1px solid var(--linea);
+  }
+  .services__item a {
+    display: grid;
+    grid-template-columns: 3rem 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    padding-block: clamp(1rem, 2vw, 1.5rem);
+    border-bottom: 1px solid var(--linea);
+    text-decoration: none;
+    transition:
+      color 0.3s,
+      padding 0.45s var(--ease-out);
+  }
+  .services__n {
+    font-size: var(--fs-sm);
+    opacity: 0.7;
+  }
+  .services__name {
+    font-size: var(--fs-2xl);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+  }
+  .services :global(.services__mark) {
+    height: 1.4rem;
+    color: var(--fucsia);
+    opacity: 0;
+    transform: translateX(-1rem);
+    transition:
+      opacity 0.3s,
+      transform 0.45s var(--ease-out);
+  }
+  .services__item a:hover,
+  .services__item a:focus-visible {
+    color: var(--fucsia);
+    padding-left: 0.75rem;
+  }
+  .services__item a:hover :global(.services__mark),
+  .services__item a:focus-visible :global(.services__mark) {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ---------- Manifiesto ---------- */
+  .statement {
+    overflow: hidden;
+  }
+  .statement :global(.statement__swoosh) {
+    position: absolute;
+    width: min(60rem, 110vw);
+    left: -12%;
+    bottom: -18%;
+    color: var(--rosa);
+    opacity: 0.6;
+  }
+  .statement .wrap {
+    position: relative;
+  }
+  .statement__text {
+    font-size: var(--fs-3xl);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    max-width: 16ch;
+    color: var(--azul);
+  }
+  .statement__sub {
+    margin-top: 2rem;
+    font-size: var(--fs-lg);
+    color: var(--negro);
+  }
+</style>

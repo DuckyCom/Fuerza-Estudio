@@ -1,0 +1,80 @@
+---
+// Texto que corre, como las piezas «Crear o reventar. Crear o reventar.» del brandbook.
+import Brand from './Brand.astro';
+
+interface Props {
+  items: string[];
+  marks?: string[];
+  class?: string;
+  reverse?: boolean;
+}
+const {
+  items,
+  marks = ['icon-ola', 'icon-asterisco', 'icon-trazo'],
+  class: className,
+  reverse = false,
+} = Astro.props;
+const seq = items.map((t, i) => ({ t, m: marks[i % marks.length] }));
+---
+
+<div class:list={['marquee', className, { reverse }]}>
+  <p class="visually-hidden">{items.join(' ')}</p>
+  <div class="marquee__track" aria-hidden="true">
+    {
+      [0, 1].map(() => (
+        <div class="marquee__group">
+          {[...seq, ...seq].map(({ t, m }) => (
+            <span class="marquee__item">
+              <span class="serif-it">{t}</span>
+              <Brand name={m} class="marquee__mark" />
+            </span>
+          ))}
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .marquee {
+    overflow: hidden;
+    padding-block: clamp(1rem, 2vw, 1.75rem);
+    font-size: var(--fs-3xl);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+  .marquee__track {
+    display: flex;
+    width: max-content;
+    animation: run 38s linear infinite;
+  }
+  .reverse .marquee__track {
+    animation-direction: reverse;
+  }
+  .marquee:hover .marquee__track {
+    animation-play-state: paused;
+  }
+  .marquee__group {
+    display: flex;
+  }
+  .marquee__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    padding-right: 0.4em;
+  }
+  .marquee :global(.marquee__mark) {
+    height: 0.62em;
+    flex: none;
+  }
+  .marquee :global(.marquee__mark svg) {
+    height: 100%;
+    width: auto;
+  }
+  @keyframes run {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+</style>

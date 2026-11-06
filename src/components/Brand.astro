@@ -1,0 +1,28 @@
+---
+// Inserta un recurso vectorial de la marca (sacado del brandbook) como SVG inline,
+// así toma el color del texto (currentColor) y no hay pedidos extra.
+// Recursos: logo, logo-ola, isotipo, icon-ola, icon-trazo, icon-asterisco,
+// trazos, swoosh-a, swoosh-b (ver src/assets/brand/).
+const files = import.meta.glob<string>('../assets/brand/*.svg', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+});
+
+interface Props {
+  name: string;
+  label?: string;
+  class?: string;
+}
+
+const { name, label, class: className } = Astro.props;
+const raw = files[`../assets/brand/${name}.svg`];
+if (!raw) throw new Error(`Recurso de marca inexistente: ${name}`);
+
+const a11y = label
+  ? `role="img" aria-label="${label.replace(/"/g, '&quot;')}"`
+  : 'aria-hidden="true" focusable="false"';
+const svg = raw.replace('<svg ', `<svg ${a11y} `);
+---
+
+<span class:list={['brand', `brand--${name}`, className]} set:html={svg} />

@@ -1,0 +1,163 @@
+---
+import Brand from './Brand.astro';
+import { NAV, SITE } from '../data/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="footer t-azul" id="contacto">
+  <div class="wrap">
+    <div class="footer__cta">
+      <p class="label">Contacto</p>
+      <h2 class="footer__title">
+        Le damos
+        <br /><Brand name="icon-ola" class="inline-mark fm fm--naranja" /> <span class="serif-it">fuerza</span>
+        <br />a tu <Brand name="icon-trazo" class="inline-mark fm fm--naranja" />
+        <br /><Brand name="icon-asterisco" class="inline-mark fm fm--fucsia" /> marca.
+      </h2>
+      <div class="footer__actions">
+        <p class="lead serif">¿Tenés un proyecto en mente? Contanos.</p>
+        <div class="footer__buttons">
+          <a class="btn btn--rosa" href={SITE.social.instagram.url} target="_blank" rel="noopener">
+            Escribinos por Instagram
+          </a>
+          {SITE.email && <a class="link-arrow" href={`mailto:${SITE.email}`}>{SITE.email} <span class="arrow" /></a>}
+        </div>
+      </div>
+    </div>
+
+    <div class="footer__grid">
+      <div>
+        <p class="caps footer__h">Estudio</p>
+        <p>{SITE.fullName}<br />{SITE.city}</p>
+      </div>
+      <nav aria-label="Pie">
+        <p class="caps footer__h">Sitio</p>
+        <ul role="list">
+          <li><a href="/">Inicio</a></li>
+          {NAV.filter((n) => n.href !== '#contacto').map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+        </ul>
+      </nav>
+      <div>
+        <p class="caps footer__h">Redes</p>
+        <ul role="list">
+          <li><a href={SITE.social.instagram.url} target="_blank" rel="noopener">Instagram <span class="footer__muted">{SITE.social.instagram.label}</span></a></li>
+          <li><a href={SITE.social.behance.url} target="_blank" rel="noopener">Behance <span class="footer__muted">{SITE.social.behance.label}</span></a></li>
+        </ul>
+      </div>
+    </div>
+
+    <a href="/" class="footer__logo" aria-label={`${SITE.name}, inicio`}>
+      <Brand name="logo" />
+    </a>
+
+    <div class="footer__base caps">
+      <span>© {year} {SITE.fullName}</span>
+      <span class="serif-it footer__claim">{SITE.claim}</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  /* Al tocar «Contacto» (#contacto) el pie queda arriba de todo: el bloque del
+     título + botón tiene que entrar en una pantalla, por eso el alto manda. */
+  .footer {
+    padding-block: clamp(3.5rem, 2rem + 5vw, 6rem) 1.5rem;
+    overflow: hidden;
+  }
+
+  .footer__cta {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .footer__title {
+    font-size: min(var(--fs-4xl), 12.5svh);
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+  }
+  .footer :global(.fm) {
+    height: 0.5em;
+  }
+  .footer :global(.fm--naranja) {
+    color: var(--naranja);
+  }
+  .footer :global(.fm--fucsia) {
+    color: var(--fucsia);
+  }
+
+  .footer__actions {
+    display: grid;
+    gap: 1.75rem;
+    max-width: 38rem;
+    margin-top: 1rem;
+  }
+  .footer__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 2rem;
+  }
+
+  .footer__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: 2.5rem var(--gutter);
+    margin-top: var(--section);
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--linea);
+  }
+  .footer__h {
+    margin-bottom: 0.9rem;
+    opacity: 0.65;
+  }
+  .footer__grid ul {
+    display: grid;
+    gap: 0.4rem;
+  }
+  .footer__grid a {
+    text-decoration: none;
+  }
+  .footer__grid a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .footer__muted {
+    opacity: 0.6;
+    font-size: var(--fs-sm);
+    margin-left: 0.35em;
+  }
+
+  .footer__logo {
+    display: block;
+    margin-top: clamp(3rem, 8vw, 6rem);
+  }
+  .footer__logo :global(.brand) {
+    display: block;
+    width: 100%;
+  }
+
+  .footer__base {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 2rem;
+    margin-top: 1.5rem;
+    opacity: 0.8;
+  }
+  .footer__claim {
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: var(--fs-sm);
+  }
+
+  @media (min-width: 64rem) {
+    .footer__cta {
+      grid-template-columns: 1.6fr 1fr;
+      align-items: end;
+    }
+    .footer__cta .label {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

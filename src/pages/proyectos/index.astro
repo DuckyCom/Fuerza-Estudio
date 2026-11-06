@@ -1,0 +1,77 @@
+---
+import Base from '../../layouts/Base.astro';
+import Brand from '../../components/Brand.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { PROJECTS } from '../../data/projects';
+import { SITE } from '../../data/site';
+---
+
+<Base
+  title="Proyectos"
+  description="Identidades, manuales de marca, packaging, campañas y redes: una selección de proyectos de Fuerza Estudio Creativo."
+  headerTone="rosa"
+>
+  <section class="page-hero t-rosa" aria-labelledby="title">
+    <div class="wrap">
+      <p class="label">Proyectos</p>
+      <h1 id="title" class="display">
+        Lo que <span class="nowrap"><span class="serif-it">hicimos</span><Brand name="icon-asterisco" class="inline-mark ph-mark" /></span>
+      </h1>
+      <p class="lead page-hero__lead">
+        Identidades, manuales de marca, packaging, campañas y redes. Cada proyecto completo está en{' '}
+        <a href={SITE.social.behance.url} target="_blank" rel="noopener">nuestro Behance</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="t-rosa list" aria-label="Todos los proyectos">
+    <div class="wrap list__grid">
+      {PROJECTS.map((p, i) => <ProjectCard project={p} index={i} />)}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-hero {
+    padding-top: clamp(8rem, 18vh, 12rem);
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+  }
+  .page-hero .display {
+    margin-top: 1.5rem;
+  }
+  .page-hero :global(.ph-mark) {
+    color: var(--naranja);
+    height: 0.55em;
+    vertical-align: 0.1em;
+  }
+  .page-hero__lead {
+    margin-top: 2rem;
+    max-width: 40rem;
+    color: var(--negro);
+  }
+  .page-hero__lead a {
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.15em;
+  }
+
+  .list {
+    padding-bottom: var(--section);
+  }
+  .list__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
+    gap: clamp(2.5rem, 4vw, 3.5rem) var(--gutter);
+    color: var(--negro);
+  }
+  @media (min-width: 64rem) {
+    .list__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .list__grid > :global(:nth-child(3n + 2)) {
+      transform: translateY(4rem);
+    }
+    .list {
+      padding-bottom: calc(var(--section) + 4rem);
+    }
+  }
+</style>

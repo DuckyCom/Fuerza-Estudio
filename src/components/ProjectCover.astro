@@ -1,0 +1,156 @@
+---
+// Portada de un proyecto. Si el proyecto tiene `cover`, muestra la imagen; si no,
+// arma una portada tipográfica con la paleta y los recursos del brandbook
+// (fondo pleno, nombre en grande y un ícono de la marca, como las piezas de las pág. 10-19).
+import Brand from './Brand.astro';
+import type { Project } from '../data/projects';
+
+interface Props {
+  project: Project;
+  size?: 'card' | 'hero';
+  eager?: boolean;
+}
+const { project, size = 'card', eager = false } = Astro.props;
+const markName = project.mark === 'isotipo' ? 'isotipo' : `icon-${project.mark}`;
+---
+
+<div class:list={['cover', `cover--${project.tone}`, `cover--${size}`, `cover--m-${project.mark}`]}>
+  {
+    project.cover ? (
+      <img
+        src={project.cover}
+        alt=""
+        loading={eager ? 'eager' : 'lazy'}
+        decoding="async"
+        referrerpolicy="no-referrer"
+        class="cover__img"
+      />
+    ) : (
+      <>
+        <Brand name="swoosh-a" class="cover__swoosh" />
+        <Brand name={markName} class="cover__mark" />
+        <span class="cover__name" aria-hidden="true">
+          {project.title}
+        </span>
+        <Brand name="logo" class="cover__sign" />
+      </>
+    )
+  }
+</div>
+
+<style>
+  .cover {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius);
+    isolation: isolate;
+  }
+  .cover--hero {
+    aspect-ratio: 16 / 9;
+  }
+
+  .cover--azul {
+    background: var(--grad-azul);
+    color: var(--rosa);
+    --accent: var(--fucsia);
+  }
+  .cover--rosa {
+    background: var(--grad-rosa);
+    color: var(--azul);
+    --accent: var(--naranja);
+  }
+  .cover--fucsia {
+    background: var(--grad-fucsia);
+    color: var(--azul);
+    --accent: var(--rosa);
+  }
+  .cover--naranja {
+    background: var(--grad-naranja);
+    color: var(--rosa);
+    --accent: var(--azul);
+  }
+  .cover--negro {
+    background: var(--negro);
+    color: var(--rosa);
+    --accent: var(--naranja);
+  }
+
+  .cover__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.9s var(--ease-out);
+  }
+  :global(a:hover) > .cover .cover__img,
+  :global(a:focus-visible) > .cover .cover__img {
+    transform: scale(1.04);
+  }
+
+  .cover :global(.cover__swoosh) {
+    position: absolute;
+    z-index: -1;
+    width: 120%;
+    left: -10%;
+    bottom: -12%;
+    color: var(--accent);
+    opacity: 0.9;
+    transform: rotate(-8deg);
+    transition: transform 0.9s var(--ease-out);
+  }
+
+  .cover :global(.cover__mark) {
+    position: absolute;
+    top: 7%;
+    right: 7%;
+    width: 22%;
+    transition: transform 0.9s var(--ease-out);
+  }
+  .cover--m-isotipo :global(.cover__mark) {
+    width: 16%;
+  }
+
+  .cover__name {
+    position: absolute;
+    left: 7%;
+    right: 7%;
+    bottom: 13%;
+    font-size: clamp(2rem, 1.2rem + 3vw, 3.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+  .cover--hero :global(.cover__swoosh) {
+    width: 70%;
+    left: auto;
+    right: -6%;
+    bottom: -24%;
+  }
+  .cover--hero :global(.cover__mark) {
+    width: 12%;
+  }
+  .cover--hero .cover__name {
+    font-size: var(--fs-3xl);
+    bottom: 16%;
+  }
+
+  .cover :global(.cover__sign) {
+    position: absolute;
+    left: 7%;
+    bottom: 6%;
+    width: 18%;
+    opacity: 0.85;
+  }
+  .cover--hero :global(.cover__sign) {
+    width: 10%;
+  }
+
+  :global(a:hover) > .cover :global(.cover__swoosh),
+  :global(a:focus-visible) > .cover :global(.cover__swoosh) {
+    transform: rotate(-2deg) translateY(-6%);
+  }
+  :global(a:hover) > .cover :global(.cover__mark),
+  :global(a:focus-visible) > .cover :global(.cover__mark) {
+    transform: rotate(-14deg) scale(1.08);
+  }
+</style>
